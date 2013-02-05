@@ -1,0 +1,14 @@
+@()(implicit request: RequestHeader)
+
+@main("Wally") {
+    
+  <div id="map"></div>
+
+  <script>
+    $(function() {
+      // 86.149.96.94 (UK), 108.61.71.3 (US)
+      var wally = new Wally('@routes.Application.ws.webSocketURL()');
+    });
+  </script>
+    
+}
