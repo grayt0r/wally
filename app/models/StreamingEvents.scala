@@ -25,6 +25,10 @@ object EventStream {
         (iteratee,enumerator)
     }
   }
+
+  def fire(event: String, lon: Float, lat: Float) = {
+    default ? FireEvent(event, lon, lat)
+  }
 }
 
 class EventStream extends Actor {
@@ -33,7 +37,6 @@ class EventStream extends Actor {
   def receive = {
     case Register() => {
       sender ! Connected(streamEnumerator)
-      self ! FireEvent("test", 1, 2)
     }
 
     case FireEvent(event, lon, lat) => {
@@ -41,7 +44,7 @@ class EventStream extends Actor {
     }
   }
   
-  def notifyAll(event: String, lon: Long, lat: Long) {
+  def notifyAll(event: String, lon: Float, lat: Float) {
     val msg = JsObject(
       Seq(
         "event" -> JsString(event),
@@ -55,5 +58,5 @@ class EventStream extends Actor {
 }
 
 case class Register()
-case class FireEvent(event: String, lon: Long, lat: Long)
+case class FireEvent(event: String, lon: Float, lat: Float)
 case class Connected(enumerator:Enumerator[JsValue])

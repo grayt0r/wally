@@ -2,6 +2,7 @@ class @Wally
   constructor: (@wsUrl) ->
     @drawMap()
     @connect()
+    @points = []
 
   drawMap: ->
     color = d3.scale.category10()
@@ -28,13 +29,15 @@ class @Wally
         .attr("class", "country-boundary")
         .attr("d", path)
 
-  plot: (points) ->
-    plottedPoints = @svg.selectAll('.point')
-      .data(points)
+  plot: (point) ->
+    @points.push point
+
+    @svg.selectAll('.point')
+      .data(@points)
       .enter().insert('circle')
       .attr("class", 'point')
-      .attr("cx", (d) => @projection([d.longitude, d.latitude])[0])
-      .attr("cy", (d) => @projection([d.longitude, d.latitude])[1])
+      .attr("cx", (d) => @projection([d.lon, d.lat])[0])
+      .attr("cy", (d) => @projection([d.lon, d.lat])[1])
       .attr("r", 0)
       .transition()
       .attr("r", 20)
@@ -45,4 +48,6 @@ class @Wally
   connect: ->
     @ws = new WebSocket(@wsUrl)
     @ws.onmessage = (event) =>
-      console.log '*** message:', event
+      data = JSON.parse event.data
+      console.log '*** data:', data
+      @plot data

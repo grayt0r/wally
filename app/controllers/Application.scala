@@ -34,10 +34,12 @@ object Application extends Controller {
   }
 
   def webhooks = Action(parse.json) { request =>
-    val event = request.body \ "event"
-    val lon = request.body \ "lon"
-    val lat = request.body \ "lat"
-    Logger.info(s"*** webhooks: ${event}, ${lon}, ${lat}")
+    val event = (request.body \ "event").as[String]
+    val lon = (request.body \ "lon").as[Float]
+    val lat = (request.body \ "lat").as[Float]
+
+    EventStream.fire(event, lon, lat)
+
     Ok("BOOM") 
   } 
   
