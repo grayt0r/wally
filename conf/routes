@@ -4,7 +4,6 @@
 
 # Home page
 GET     /                           controllers.Application.index
-GET     /location/:ip               controllers.Application.location(ip: String)
 GET     /ws                  				controllers.Application.ws
 POST    /webhooks                  	controllers.Application.webhooks
 
