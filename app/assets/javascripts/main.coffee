@@ -35,7 +35,7 @@ class @Wally
     @svg.selectAll('.point')
       .data(@points)
       .enter().insert('circle')
-      .attr("class", 'point')
+      .attr("class", (d) -> "point #{d.event}")
       .attr("cx", (d) => @projection([d.lon, d.lat])[0])
       .attr("cy", (d) => @projection([d.lon, d.lat])[1])
       .attr("r", 0)
