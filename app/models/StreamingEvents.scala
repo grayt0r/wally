@@ -18,6 +18,8 @@ object EventStream {
   implicit val timeout = Timeout(1 second)
   lazy val default = Akka.system.actorOf(Props[EventStream])
 
+  Simulation.run
+
   def register:scala.concurrent.Future[(Iteratee[JsValue,_],Enumerator[JsValue])] = {
     (default ? Register()).map {
       case Connected(enumerator) => 
